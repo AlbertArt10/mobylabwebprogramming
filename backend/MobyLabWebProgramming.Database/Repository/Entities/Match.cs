@@ -23,4 +23,9 @@ public class Match : BaseEntity
     public MatchStatusEnum Status { get; set; }
     public int? HomeScore { get; set; }
     public int? AwayScore { get; set; }
+
+    /// <summary>
+    /// This is a navigation property for the articles written about this match.
+    /// </summary>
+    public ICollection<Article> Articles { get; set; } = null!;
 }
