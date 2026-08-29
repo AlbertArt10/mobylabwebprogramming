@@ -10,6 +10,7 @@ public enum ErrorCodes
 {
     Unknown,
     TechnicalError,
+    InvalidRequest,
     EntityNotFound,
     PhysicalFileNotFound,
     EntityAlreadyExists,
