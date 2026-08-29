@@ -1,0 +1,14 @@
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editors
+.vs/
+*.swp
+*~
+
+# Secrets / local overrides
+*.local
+.env.local
+.env.*.local
