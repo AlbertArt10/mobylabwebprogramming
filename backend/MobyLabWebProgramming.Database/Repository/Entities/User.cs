@@ -14,6 +14,12 @@ public class User : BaseEntity
     public UserRoleEnum Role { get; set; }
 
     /// <summary>
+    /// This is a navigation property for a One-To-One relation, note that it is a single object and not a collection.
+    /// The property is nullable because a user may exist without the additional profile details.
+    /// </summary>
+    public UserProfile? Profile { get; set; }
+
+    /// <summary>
     /// References to other entities such as this are used to automatically fetch correlated data, this is called a navigation property.
     /// Collection such as this can be used for Many-To-One or Many-To-Many relations.
     /// Note that this field will be null if not explicitly requested via a Include query, also note that the property is used by the ORM, in the database this collection doesn't exist. 
