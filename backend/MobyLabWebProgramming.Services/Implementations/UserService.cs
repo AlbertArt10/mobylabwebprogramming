@@ -81,13 +81,20 @@ public class UserService(IRepository<WebAppDatabaseContext> repository, ILoginSe
             return ServiceResponse.FromError(new(HttpStatusCode.Conflict, "The user already exists!", ErrorCodes.UserAlreadyExists));
         }
 
-        await repository.AddAsync(new User
+        var entity = await repository.AddAsync(new User
         {
             Email = user.Email,
             Name = user.Name,
             Role = user.Role,
             Password = user.Password
         }, cancellationToken); // A new entity is created and persisted in the database.
+
+        await repository.AddAsync(new UserProfile // The profile is created together with the user, the id of the new user is needed for the foreign key.
+        {
+            UserId = entity.Id,
+            FavoriteTeam = CleanOptionalText(user.FavoriteTeam),
+            Country = CleanOptionalText(user.Country)
+        }, cancellationToken);
 
         await mailService.SendMail(user.Email, "Welcome!", MailTemplates.UserAddTemplate(user.Name), true, "My App", cancellationToken); // You can send a notification on the user email. Change the email if you want.
 
@@ -125,4 +132,9 @@ public class UserService(IRepository<WebAppDatabaseContext> repository, ILoginSe
 
         return ServiceResponse.ForSuccess();
     }
+
+    /// <summary>
+    /// The optional profile details are stored as null when they are not filled in, so that an empty string doesn't end up in the database.
+    /// </summary>
+    private static string? CleanOptionalText(string? value) => string.IsNullOrWhiteSpace(value) ? null : value.Trim();
 }

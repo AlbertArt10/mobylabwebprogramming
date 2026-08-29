@@ -11,4 +11,6 @@ public class UserAddRecord
     public string Email { get; set; } = null!;
     public string Password { get; set; } = null!;
     public UserRoleEnum Role { get; set; }
+    public string? FavoriteTeam { get; set; }
+    public string? Country { get; set; }
 }
