@@ -41,6 +41,7 @@ public static class WebApplicationBuilderExtensions
         builder.Services.Configure<MailConfiguration>(builder.Configuration.GetSection(nameof(MailConfiguration)));
         builder.Services
             .AddScoped<IUserService, UserService>()
+            .AddScoped<ISportService, SportService>()
             .AddScoped<ILoginService, LoginService>()
             .AddScoped<IFileRepository, FileRepository>()
             .AddScoped<IUserFileService, UserFileService>()
