@@ -25,6 +25,11 @@ public class User : BaseEntity
     public ICollection<Article> Articles { get; set; } = null!;
 
     /// <summary>
+    /// This is a navigation property for the Many-To-Many relation with the articles this user liked.
+    /// </summary>
+    public ICollection<ArticleLike> ArticleLikes { get; set; } = null!;
+
+    /// <summary>
     /// References to other entities such as this are used to automatically fetch correlated data, this is called a navigation property.
     /// Collection such as this can be used for Many-To-One or Many-To-Many relations.
     /// Note that this field will be null if not explicitly requested via a Include query, also note that the property is used by the ORM, in the database this collection doesn't exist. 

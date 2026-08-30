@@ -25,4 +25,9 @@ public class Article : BaseEntity
     public User Author { get; set; } = null!;
     public string Title { get; set; } = null!;
     public string Content { get; set; } = null!;
+
+    /// <summary>
+    /// This is a navigation property for the Many-To-Many relation with the users that liked this article.
+    /// </summary>
+    public ICollection<ArticleLike> ArticleLikes { get; set; } = null!;
 }
