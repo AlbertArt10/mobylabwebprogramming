@@ -43,6 +43,7 @@ public static class WebApplicationBuilderExtensions
             .AddScoped<IUserService, UserService>()
             .AddScoped<ISportService, SportService>()
             .AddScoped<IMatchService, MatchService>()
+            .AddScoped<IArticleService, ArticleService>()
             .AddScoped<ILoginService, LoginService>()
             .AddScoped<IFileRepository, FileRepository>()
             .AddScoped<IUserFileService, UserFileService>()
