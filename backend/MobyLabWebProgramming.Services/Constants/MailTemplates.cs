@@ -39,4 +39,19 @@ public static class MailTemplates
     </table>
 </body>
 </html>";
+
+    /// <summary>
+    /// This template is used for the notification sent to an analyst after one of their articles is published.
+    /// </summary>
+    public static string ArticlePublishedTemplate(string authorName, string articleTitle) => $@"<!DOCTYPE html>
+<html lang=""en"" xmlns=""http://www.w3.org/1999/xhtml"">
+<head>
+    <meta charset=""utf-8"" />
+    <title>Article published</title>
+</head>
+<body>
+    <p>Hello {authorName},</p>
+    <p>Your article ""{articleTitle}"" was published.</p>
+</body>
+</html>";
 }

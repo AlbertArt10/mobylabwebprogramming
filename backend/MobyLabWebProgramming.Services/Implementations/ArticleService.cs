@@ -7,6 +7,7 @@ using MobyLabWebProgramming.Infrastructure.Repositories.Interfaces;
 using MobyLabWebProgramming.Infrastructure.Requests;
 using MobyLabWebProgramming.Infrastructure.Responses;
 using MobyLabWebProgramming.Services.Abstractions;
+using MobyLabWebProgramming.Services.Constants;
 using MobyLabWebProgramming.Services.DataTransferObjects;
 using MobyLabWebProgramming.Services.Specifications;
 
@@ -16,7 +17,7 @@ namespace MobyLabWebProgramming.Services.Implementations;
 /// Inject the required services through the constructor.
 /// The permissions here are on two levels, the role decides who may write at all while the author of the entry decides who may change it.
 /// </summary>
-public class ArticleService(IRepository<WebAppDatabaseContext> repository) : IArticleService
+public class ArticleService(IRepository<WebAppDatabaseContext> repository, IMailService mailService) : IArticleService
 {
     public async Task<ServiceResponse<PagedResponse<ArticleRecord>>> GetArticles(PaginationSearchQueryParams pagination, CancellationToken cancellationToken = default)
     {
@@ -83,13 +84,23 @@ public class ArticleService(IRepository<WebAppDatabaseContext> repository) : IAr
             return ServiceResponse.FromError(validationError);
         }
 
+        var title = article.Title.Trim();
+
         await repository.AddAsync(new Article
         {
             MatchId = article.MatchId,
             AuthorId = requestingUser.Id, // The author is the user that makes the request, it is never taken from the body.
-            Title = article.Title.Trim(),
+            Title = title,
             Content = article.Content.Trim()
         }, cancellationToken); // A new entity is created and persisted in the database.
+
+        await mailService.SendMail(
+            requestingUser.Email,
+            "Article published",
+            MailTemplates.ArticlePublishedTemplate(requestingUser.Name, title),
+            true,
+            "BetRoyale",
+            cancellationToken); // The author is notified that the article went live, the mail is sent after the entity is saved so a mail failure doesn't lose the article.
 
         return ServiceResponse.ForSuccess();
     }
