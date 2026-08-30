@@ -25,6 +25,7 @@ public sealed class ArticleProjectionSpec : Specification<Article, ArticleRecord
                 AuthorName = e.Author.Name,
                 Title = e.Title,
                 Content = e.Content,
+                LikeCount = e.ArticleLikes.Count, // The count is translated to a subquery, the likes themselves are never loaded.
                 CreatedAt = e.CreatedAt,
                 UpdatedAt = e.UpdatedAt
             });
